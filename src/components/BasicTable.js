@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react'
 import { useTable } from 'react-table'
 import MOCK_DATA from "./MOCK_DATA.json"
-import { COLUMNS } from './columns'
+import { COLUMNS, GROUPED_COLUMNS } from './columns'
 import "./table.css"
 
 function BasicTable() {
-    const columns = useMemo(() => COLUMNS, []);
+    const columns = useMemo(() => GROUPED_COLUMNS, []);
     const data = useMemo(() => MOCK_DATA, []);
 
     const tableInstance = useTable({
@@ -17,8 +17,8 @@ function BasicTable() {
         getTableProps, 
         getTableBodyProps, 
         rows, 
-        headerGroups, 
         prepareRow,
+        headerGroups, 
         footerGroups
     } = tableInstance;
     
@@ -29,9 +29,11 @@ function BasicTable() {
                     return (
                         <tr {...headerGroup.getHeaderGroupProps()}>
                             {headerGroup.headers.map((column) => {
-                                return <th {...column.getHeaderProps()}>
-                                    {column.render("Header")}
-                                </th>
+                                return (
+                                    <th {...column.getHeaderProps()}>
+                                        {column.render("Header")}
+                                    </th>
+                                )
                             })}
                         </tr>
                     )
@@ -43,9 +45,11 @@ function BasicTable() {
                     return (
                         <tr {...row.getRowProps()}>
                             {row.cells.map(cell => {
-                                return <td {...cell.getCellProps()}>
-                                    {cell.render("Cell")}
-                                </td>
+                                return (
+                                    <td {...cell.getCellProps()}>
+                                        {cell.render("Cell")}
+                                    </td>
+                                )
                             })}
                         </tr>     
                     )
@@ -54,7 +58,7 @@ function BasicTable() {
             <tfoot>
                 {footerGroups.map(footerGroup => {
                     return (
-                        <tr {...footerGroup.getFooterGroupProps}>
+                        <tr {...footerGroup.getFooterGroupProps()}>
                             {footerGroup.headers.map(column => {
                                 return (
                                     <td {...column.getFooterProps()}>
